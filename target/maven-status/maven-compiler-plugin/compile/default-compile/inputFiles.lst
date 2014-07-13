@@ -1,0 +1,13 @@
+/Users/Scott/dev/github/Festival-Service/src/main/java/com/stagegage/festivalService/repository/tables/keys/FestivalShowKey.java
+/Users/Scott/dev/github/Festival-Service/src/main/java/com/stagegage/festivalService/repository/FestivalRepository.java
+/Users/Scott/dev/github/Festival-Service/src/main/java/com/stagegage/festivalService/dto/FestivalDto.java
+/Users/Scott/dev/github/Festival-Service/src/main/java/com/stagegage/festivalService/dto/response/FestivalResponse.java
+/Users/Scott/dev/github/Festival-Service/src/main/java/com/stagegage/festivalService/repository/cassandra/CassandraConfig.java
+/Users/Scott/dev/github/Festival-Service/src/main/java/com/stagegage/festivalService/exception/InvalidFestivalDtoException.java
+/Users/Scott/dev/github/Festival-Service/src/main/java/com/stagegage/festivalService/resource/FestivalResource.java
+/Users/Scott/dev/github/Festival-Service/src/main/java/com/stagegage/festivalService/Main.java
+/Users/Scott/dev/github/Festival-Service/src/main/java/com/stagegage/festivalService/repository/tables/FestivalByNameRow.java
+/Users/Scott/dev/github/Festival-Service/src/main/java/com/stagegage/festivalService/dto/response/ShowResponse.java
+/Users/Scott/dev/github/Festival-Service/src/main/java/com/stagegage/festivalService/dto/ShowDto.java
+/Users/Scott/dev/github/Festival-Service/src/main/java/com/stagegage/festivalService/repository/tables/FestivalShowByNameIdRow.java
+/Users/Scott/dev/github/Festival-Service/src/main/java/com/stagegage/festivalService/service/FestivalService.java
