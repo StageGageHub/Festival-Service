@@ -23,19 +23,3 @@ CREATE TABLE festival_shows (
 
 
 
-
-CREATE TABLE artists_by_name (
-    id UUID,
-    name text,
-    genres Map<UUID, text>,
-    PRIMARY KEY (name)
-);
-
-
-CREATE TABLE genres_by_name (
-    genre text,
-    id UUID,
-    PRIMARY KEY(name)
-);
-
-
