@@ -4,6 +4,7 @@ import com.stagegage.festivalService.dto.FestivalDto;
 import com.stagegage.festivalService.dto.ShowDto;
 import com.stagegage.festivalService.dto.response.FestivalResponse;
 import com.stagegage.festivalService.service.FestivalService;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,8 @@ import java.util.UUID;
 @RequestMapping("/festivals")
 public class FestivalResource {
 
+    Logger logger = Logger.getLogger(getClass());
+
     @Autowired
     private FestivalService festivalService;
 
@@ -27,7 +30,7 @@ public class FestivalResource {
     public List<FestivalResponse> getFestivals(@RequestParam(required = false) String name,
                                                @RequestParam(required = false) String genre)
     {
-
+        logger.info(String.format("get festivals with name '%s' and genre '%s' requested", name, genre));
         List<FestivalDto> festivalDtos = festivalService.getFestivals(name, genre);
 
         return FestivalResponse.getResponses(festivalDtos);
@@ -69,7 +72,4 @@ public class FestivalResource {
                                 DateTime.parse(startTime),
                                 DateTime.parse(endTime))));
     }
-
-
-
 }

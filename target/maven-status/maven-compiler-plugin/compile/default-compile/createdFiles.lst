@@ -1,7 +1,9 @@
 com/stagegage/festivalService/service/FestivalService.class
+com/stagegage/festivalService/communication/FestivalServiceCommunicator.class
 com/stagegage/festivalService/dto/response/FestivalResponse.class
 com/stagegage/festivalService/resource/FestivalResource.class
 com/stagegage/festivalService/repository/tables/FestivalShowByNameIdRow.class
+com/stagegage/festivalService/servlet/FestivalServletInitializer.class
 com/stagegage/festivalService/repository/FestivalRepository$3.class
 com/stagegage/festivalService/dto/ShowDto.class
 com/stagegage/festivalService/repository/tables/keys/FestivalShowKey.class

@@ -4,6 +4,7 @@ import com.stagegage.festivalService.dto.FestivalDto;
 import com.stagegage.festivalService.dto.ShowDto;
 import com.stagegage.festivalService.exception.InvalidFestivalDtoException;
 import com.stagegage.festivalService.repository.FestivalRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,10 +21,15 @@ public class FestivalService {
     @Autowired
     private FestivalRepository festivalRepository;
 
+    Logger logger = Logger.getLogger(getClass());
+
+
     public List<FestivalDto> getFestivals(String name, String genre) {
         if(name != null || genre != null) {
+            logger.info("getting filtered festivals from repo");
             return festivalRepository.getFestivals(name, genre);
         } else {
+            logger.info("getting all festivals from repo");
             return festivalRepository.getAllFestivals();
         }
     }
