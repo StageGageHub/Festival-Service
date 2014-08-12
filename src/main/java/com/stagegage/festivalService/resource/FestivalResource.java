@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Scott on 7/11/14.
@@ -48,28 +47,21 @@ public class FestivalResource {
     }
 
     @RequestMapping(value = "/{festivalName}", method = RequestMethod.GET)
-    public FestivalResponse getFestivalById(@PathVariable String festivalName) {
+    public FestivalResponse getFestivalByName(@PathVariable String festivalName) {
 
         return new FestivalResponse(festivalService.getFestival(festivalName));
-    }
-
-    @RequestMapping(value = "/{festivalName}/shows", method = RequestMethod.GET)
-    public FestivalResponse getFestivalShows(@PathVariable String festivalName) {
-
-        return new FestivalResponse(festivalService.getFestivalShows(festivalName));
     }
 
     @RequestMapping(value = "/{festivalName}/shows", method = RequestMethod.PUT)
     public FestivalResponse addFestivalShow(@PathVariable String festivalName,
                                                 @RequestParam String artistName,
-                                                @RequestParam String startTime,
-                                                @RequestParam String endTime)
+                                                @RequestParam String startDate,
+                                                @RequestParam String endDate)
     {
 
         return new FestivalResponse(festivalService.addFestivalShow(festivalName,
-                           new ShowDto(UUID.randomUUID(),
-                                artistName,
-                                DateTime.parse(startTime),
-                                DateTime.parse(endTime))));
+                           new ShowDto(artistName,
+                                DateTime.parse(startDate),
+                                DateTime.parse(endDate))));
     }
 }

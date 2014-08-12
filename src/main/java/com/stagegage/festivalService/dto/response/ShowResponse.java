@@ -4,7 +4,6 @@ import com.stagegage.festivalService.dto.ShowDto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Scott on 7/12/14.
@@ -13,23 +12,20 @@ import java.util.UUID;
  */
 public class ShowResponse {
 
-    private final UUID showId;
     private final String artistName;
     private final String startTime;
     private final String endTime;
 
-    public ShowResponse(UUID showId, String artistName, String startTime, String endTime) {
-        this.showId = showId;
+    public ShowResponse(String artistName, String startTime, String endTime) {
         this.artistName = artistName;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
     public ShowResponse(ShowDto dto) {
-        this.showId = dto.getShowId();
         this.artistName = dto.getArtistName();
-        this.startTime = dto.getStartTime().toString();
-        this.endTime = dto.getEndTime().toString();
+        this.startTime = (dto.getStartTime() != null) ? dto.getStartTime().toString() : null;
+        this.endTime = (dto.getEndTime() != null) ? dto.getEndTime().toString() : null;
     }
 
     public static List<ShowResponse> getResponses(List<ShowDto> showDtos) {
@@ -41,10 +37,6 @@ public class ShowResponse {
         }
 
         return showResponses;
-    }
-
-    public UUID getShowId() {
-        return showId;
     }
 
     public String getArtistName() {

@@ -46,9 +46,6 @@ public class FestivalService {
         return festivalRepository.getFestivalByName(festivalName);
     }
 
-    public FestivalDto getFestivalShows(String festivalName) {
-        return festivalRepository.getFestivalShows(festivalName);
-    }
 
     public FestivalDto addFestivalShow(String festivalName, ShowDto showDto) {
 

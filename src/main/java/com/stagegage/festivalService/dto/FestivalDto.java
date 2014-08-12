@@ -1,11 +1,13 @@
 package com.stagegage.festivalService.dto;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Scott on 7/11/14.
@@ -14,15 +16,15 @@ import java.util.UUID;
  */
 public class FestivalDto {
 
-    private final UUID id;
     private final String name;
     private final DateTime startDate;
     private final DateTime endDate;
     private final List<ShowDto> shows;
 
+    private static Log logger = LogFactory.getLog(FestivalDto.class);
 
-    public FestivalDto(UUID id, String name, DateTime startDate, DateTime endDate, List<ShowDto> shows) {
-        this.id = id;
+
+    public FestivalDto(String name, DateTime startDate, DateTime endDate, List<ShowDto> shows) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -30,19 +32,22 @@ public class FestivalDto {
     }
 
     public FestivalDto(String name, String startDate, String endDate) {
-        Random random = new Random();
-
-        this.id = UUID.randomUUID();
         this.name = name;
-        this.startDate = ISODateTimeFormat.dateTime().parseDateTime(startDate);
-        this.endDate = ISODateTimeFormat.dateTime().parseDateTime(startDate);
+
+        if(startDate != null) {
+            this.startDate = ISODateTimeFormat.dateTime().parseDateTime(startDate);
+        } else {
+            this.startDate = null;
+        }
+        if(endDate != null) {
+            this.endDate = ISODateTimeFormat.dateTime().parseDateTime(startDate);
+        } else {
+            this.endDate = null;
+        }
+
         this.shows = null;
     }
 
-
-    public UUID getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
@@ -56,7 +61,6 @@ public class FestivalDto {
         return endDate;
     }
 
-
     public List<ShowDto> getShows() {
         return shows;
     }
@@ -65,4 +69,63 @@ public class FestivalDto {
         return (name !=  null) && (startDate != null) && (endDate != null);
     }
 
+    public static FestivalDto toFestivalDTO(DBObject festivalDBO) {
+        if(festivalDBO == null) {
+            return new FestivalDto(null, null, null);
+        }
+        logger.debug(String.format("Mapping fesitval DTO from DBO: %s", festivalDBO.toString()));
+
+        String name = (String) festivalDBO.removeField("name");
+        DateTime startDate = DateTime.parse((String) festivalDBO.removeField("startDate"));
+        DateTime endDate = DateTime.parse((String) festivalDBO.removeField("endDate"));
+        ArrayList<DBObject> showDBOs = (ArrayList<DBObject>) festivalDBO.removeField("shows");
+
+        List<ShowDto> shows = new ArrayList<ShowDto>();
+        if(showDBOs != null) {
+            for (DBObject dbo : showDBOs) {
+                shows.add(new ShowDto(
+                        (String)dbo.removeField("name"),
+                        DateTime.parse((String) dbo.removeField("startTime")),
+                        DateTime.parse((String) dbo.removeField("endTime"))));
+            }
+        }
+
+        return new FestivalDto(name, startDate, endDate, shows);
+    }
+
+    public DBObject toDBO() {
+        return new BasicDBObject()
+                .append("name", name)
+                .append("startDate", startDate.toString())
+                .append("endDate", endDate.toString())
+                .append("shows", getShowsDBOArrayList());
+    }
+
+    private ArrayList<DBObject> getShowsDBOArrayList() {
+        ArrayList<DBObject> showDBOList = new ArrayList<DBObject>();
+
+        if(shows == null) {
+            return showDBOList;
+        }
+
+        for(ShowDto show : shows) {
+            if(show == null) {
+                continue;
+            }
+
+            showDBOList.add(show.toDBO());
+        }
+
+        return showDBOList;
+    }
+
+    public DBObject toUpdateDBO() {
+        // Recall updates must start ALL with $ modifiers if you don't wanna overwrite
+        DBObject showsDBO = new BasicDBObject("shows", new BasicDBObject("$each", getShowsDBOArrayList()));
+        DBObject update = new BasicDBObject("$setOnInsert", new BasicDBObject("name", name).append("startDate", (startDate != null) ? startDate.toString() : null).append("endDate", (endDate != null) ? endDate.toString() : null));
+
+        update.put("$push", showsDBO);
+
+        return update;
+    }
 }

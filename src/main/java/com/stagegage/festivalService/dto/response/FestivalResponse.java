@@ -4,7 +4,6 @@ import com.stagegage.festivalService.dto.FestivalDto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Scott on 7/12/14.
@@ -13,15 +12,13 @@ import java.util.UUID;
  */
 public class FestivalResponse {
 
-    private final UUID id;
     private final String name;
     private final String startDate;
     private final String endDate;
     private final List<ShowResponse> shows;
 
 
-    public FestivalResponse(UUID id, String name, String startDate, String endDate, List<ShowResponse> shows) {
-        this.id = id;
+    public FestivalResponse(String name, String startDate, String endDate, List<ShowResponse> shows) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -30,13 +27,19 @@ public class FestivalResponse {
 
     public FestivalResponse(FestivalDto dto) {
         if(dto != null) {
-            this.id = dto.getId();
             this.name = dto.getName();
-            this.startDate = dto.getStartDate().toString();
-            this.endDate = dto.getEndDate().toString();
+            if(dto.getStartDate() != null)
+                this.startDate = dto.getStartDate().toString();
+            else
+                this.startDate = null;
+
+            if(dto.getEndDate() != null)
+                this.endDate = dto.getEndDate().toString();
+            else
+                this.endDate = null;
+
             this.shows = ShowResponse.getResponses(dto.getShows());
         } else {
-            this.id = null;
             this.name = null;
             this.startDate = null;
             this.endDate = null;
@@ -51,10 +54,6 @@ public class FestivalResponse {
         }
 
         return responses;
-    }
-
-    public UUID getId() {
-        return id;
     }
 
     public String getName() {
